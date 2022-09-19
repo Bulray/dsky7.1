@@ -15,7 +15,7 @@ from pathlib import Path
 import environ
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-env = environ.Env(DEBUG=(bool, False), SECRET_KEY=(str, "spifq9otuo"))
+env = environ.Env()
 environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 
 # Quick-start development settings - unsuitable for production
@@ -25,7 +25,7 @@ environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env("DEBUG")
+DEBUG = env.bool("DEBUG", False)
 
 ALLOWED_HOSTS = ["*"]
 
@@ -80,14 +80,14 @@ WSGI_APPLICATION = "todolist.wsgi.application"
 
 
 DATABASES = {
-'default': {
-  'ENGINE': 'django.db.backends.postgresql',
-  'NAME': env.str('POSTGRES_DB'),
-  'USER': env.str('POSTGRES_USER'),
-  'PASSWORD': env.str('POSTGRES_PASSWORD'),
-  'HOST': env.str('POSTGRES_HOST', default='127.0.0.1'),
-  'PORT': env.int('POSTGRES_PORT', 5432),
-}
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': env.str('POSTGRES_DB'),
+        'USER': env.str('POSTGRES_USER'),
+        'PASSWORD': env.str('POSTGRES_PASSWORD'),
+        'HOST': env.str('POSTGRES_HOST', default='127.0.0.1'),
+        'PORT': env.int('POSTGRES_PORT', 5432),
+    }
 }
 
 # Password validation
@@ -127,8 +127,8 @@ SOCIAL_AUTH_PIPELINE = (
     "social_core.pipeline.social_auth.load_extra_data",
     "social_core.pipeline.user.user_details",
 )
-SOCIAL_AUTH_VK_OAUTH2_KEY = env("SOCIAL_AUTH_VK_OAUTH2_KEY")
-SOCIAL_AUTH_VK_OAUTH2_SECRET = env("SOCIAL_AUTH_VK_OAUTH2_SECRET")
+SOCIAL_AUTH_VK_OAUTH2_KEY = env.str("SOCIAL_AUTH_VK_OAUTH2_KEY", default='secretkey')
+SOCIAL_AUTH_VK_OAUTH2_SECRET = env.str("SOCIAL_AUTH_VK_OAUTH2_SECRET", default='secretkey')
 SOCIAL_AUTH_VK_OAUTH2_SCOPE = ["email", "photos", "notify"]
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = "/logged-in/"
 SOCIAL_AUTH_LOGIN_ERROR_URL = "/login-error/"
@@ -156,4 +156,4 @@ STATIC_URL = "/static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-BOT_TOKEN = env("BOT_TOKEN")
+BOT_TOKEN = '123123123'  # env.str("BOT_TOKEN", 'fck')
