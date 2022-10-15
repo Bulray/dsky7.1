@@ -5,13 +5,17 @@ jobs:
     runs-on: ubuntu-22.04
     needs: tests
     steps:
+      - name: clone code
+        uses: actions/checkout@v2
+      - name: docker build
+        run: docker build -t sermalenk/django-app:$GITHUB_REF_NAME-$GITHUB_RUN_ID .
       - name: Checkout
         uses: actions/checkout@v3
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ${{ secrets.DOCKER_HUB_USERNAME }}/diplom
+          images: ${{ secrets.DOCKER_HUB_USERNAME }}/3211445
       - name: Login to Docker Hub
         uses: docker/login-action@v2
         with:
@@ -50,7 +54,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_PASSWORD }}
           source: "deploy/docker-compose.yml,deploy/.env"
-          target: "lesson_38"
+          target: "dsky7.1"
           strip_components: 1
       - name: run docker-compose
         uses: appleboy/ssh-action@master
